@@ -1,8 +1,47 @@
+void auto_log(string s, string color, int log_level);
 void auto_log_info(string s, string color);
 void auto_log_info(string s);
 
+void auto_log(string s, string color, int log_level)
+{
+	if(log_level > get_property("auto_log_level").to_int())
+	{
+		return;
+	}
+	switch(log_level)
+	{
+		case 1:
+			print("[WARNING] " + s, color);
+			break;
+		case 2:
+			print("[INFO] " + s, color);
+			break;
+		case 3:
+			print("[DEBUG] " + s, color);
+			break;
+	}
+}
+
+void auto_log_info(string s, string color)
+{
+	auto_log(s, color, 2);
+}
+
+void auto_log_info(string s)
+{
+	auto_log(s, "blue", 2);
+}
+
 void main() 
 {
+    if (item_amount($item[earthenware muffin tin]) <= 0) {
+        auto_log_info("You don't appear to have an earthenware muffin tin. Maybe you've already ordered today?");
+        return;
+    }
+    if (get_property("_muffinOrderedToday").to_boolean()) {
+        auto_log_info("You've already ordered a muffin today");
+        return;
+    }
 	if (item_amount($item[earthenware muffin tin]) > 0 ||
 	    (!get_property("_muffinOrderedToday").to_boolean() && 
 			$items[blueberry muffin, bran muffin, chocolate chip muffin, earthenware muffin tin] contains get_property("muffinOnOrder").to_item())) {
